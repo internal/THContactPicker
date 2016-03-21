@@ -1,6 +1,6 @@
 //
-//  THContactViewStyle
-//  ContactPicker
+//  THTokenViewStyle
+//  TokenEdit
 //
 //  Created by Dmitry Vorobjov on 12/6/12.
 //  Copyright (c) 2012 Tristan Himmelman. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface THContactViewStyle : NSObject
+@interface THTokenViewStyle : NSObject
 
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *gradientTop;

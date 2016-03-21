@@ -1,35 +1,35 @@
 //
-//  THContactPickerViewControllerDemo.m
-//  ContactPicker
+//  THTokenEditViewControllerDemo.m
+//  TokenEdit
 //
 //  Created by Vladislav Kovtash on 12.11.13.
 //  Copyright (c) 2013 Tristan Himmelman. All rights reserved.
 //
 
-#import "THContactPickerViewControllerDemo.h"
+#import "THTokenEditViewController.h"
 
-@interface THContactPickerViewControllerDemo () <THContactPickerDelegate>
+@interface THTokenEditViewController () <THTokenEditDelegate>
 
-@property (nonatomic, strong) NSMutableArray *privateSelectedContacts;
-@property (nonatomic, strong) NSArray *filteredContacts;
+@property (nonatomic, strong) NSMutableArray *privateSelectedTokens;
+@property (nonatomic, strong) NSArray *filteredTokens;
 
 @end
 
-@implementation THContactPickerViewControllerDemo
+@implementation THTokenEditViewController
 
-static const CGFloat kPickerViewHeight = 100.0;
+static const CGFloat kEditViewHeight = 100.0;
 
-NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
+NSString *THTokenEditTokenCellReuseID = @"THTokenEditTokenCell";
 
-@synthesize contactPickerView = _contactPickerView;
+@synthesize tokenEditView = _tokenEditView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"Contacts";
-        self.contacts = [NSArray arrayWithObjects:@"Tristan Himmelman",
+        self.title = @"Tokens";
+        self.tokens = [NSArray arrayWithObjects:@"Tristan Himmelman",
                          @"John Snow", @"Alex Martin", @"Nicolai Small",@"Thomas Lee", @"Nicholas Hudson", @"Bob Barss",
                          @"Andrew Stall", @"Marc Sarasin", @"Mike Beatson",@"Erica Slon", @"Eric Anderson", @"Josh Salpeter", nil];
     }
@@ -44,28 +44,28 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
         [self setEdgesForExtendedLayout:UIRectEdgeBottom|UIRectEdgeLeft|UIRectEdgeRight];
     }
         
-    // Initialize and add Contact Picker View
-    self.contactPickerView = [[THContactPickerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kPickerViewHeight)];
-    self.contactPickerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
-    self.contactPickerView.delegate = self;
-    [self.contactPickerView setPlaceholderLabelText:@"Who would you like to message?"];
-    [self.contactPickerView setPromptLabelText:@"To:"];
-    //[self.contactPickerView setLimitToOne:YES];
-    [self.view addSubview:self.contactPickerView];
+    // Initialize and add Token Edit View
+    self.tokenEditView = [[THTokenEditView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kEditViewHeight)];
+    self.tokenEditView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
+    self.tokenEditView.delegate = self;
+    [self.tokenEditView setPlaceholderLabelText:@"Who would you like to message?"];
+    [self.tokenEditView setPromptLabelText:@"To:"];
+    //[self.tokenEditView setLimitToOne:YES];
+    [self.view addSubview:self.tokenEditView];
     
-    CALayer *layer = [self.contactPickerView layer];
+    CALayer *layer = [self.tokenEditView layer];
     [layer setShadowColor:[[UIColor colorWithRed:225.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1] CGColor]];
     [layer setShadowOffset:CGSizeMake(0, 2)];
     [layer setShadowOpacity:1];
     [layer setShadowRadius:1.0f];
     
     // Fill the rest of the view with the table view
-    CGRect tableFrame = CGRectMake(0, self.contactPickerView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.contactPickerView.frame.size.height);
+    CGRect tableFrame = CGRectMake(0, self.tokenEditView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - self.tokenEditView.frame.size.height);
     self.tableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.view insertSubview:self.tableView belowSubview:self.contactPickerView];
+    [self.view insertSubview:self.tableView belowSubview:self.tokenEditView];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -92,17 +92,17 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (NSArray *)selectedContacts{
-    return [self.privateSelectedContacts copy];
+- (NSArray *)selectedTokens{
+    return [self.privateSelectedTokens copy];
 }
 
 #pragma mark - Publick properties
 
-- (NSArray *)filteredContacts {
-    if (!_filteredContacts) {
-        _filteredContacts = _contacts;
+- (NSArray *)filteredTokens {
+    if (!_filteredTokens) {
+        _filteredTokens = _tokens;
     }
-    return _filteredContacts;
+    return _filteredTokens;
 }
 
 - (void)adjustTableViewInsetTop:(CGFloat)topInset bottom:(CGFloat)bottomInset {
@@ -114,22 +114,22 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
 }
 
 - (NSInteger)selectedCount {
-    return self.privateSelectedContacts.count;
+    return self.privateSelectedTokens.count;
 }
 
 #pragma mark - Private properties
 
-- (NSMutableArray *)privateSelectedContacts {
-    if (!_privateSelectedContacts) {
-        _privateSelectedContacts = [NSMutableArray array];
+- (NSMutableArray *)privateSelectedTokens {
+    if (!_privateSelectedTokens) {
+        _privateSelectedTokens = [NSMutableArray array];
     }
-    return _privateSelectedContacts;
+    return _privateSelectedTokens;
 }
 
 #pragma mark - Private methods
 
 - (void)adjustTableFrame {
-    CGFloat yOffset = self.contactPickerView.frame.origin.y + self.contactPickerView.frame.size.height;
+    CGFloat yOffset = self.tokenEditView.frame.origin.y + self.tokenEditView.frame.size.height;
     
     CGRect tableFrame = CGRectMake(0, yOffset, self.view.frame.size.width, self.view.frame.size.height - yOffset);
     self.tableView.frame = tableFrame;
@@ -152,7 +152,7 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
 }
 
 - (NSString *)titleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.filteredContacts objectAtIndex:indexPath.row];
+    return [self.filteredTokens objectAtIndex:indexPath.row];
 }
 
 - (void) didChangeSelectedItems {
@@ -166,18 +166,18 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.filteredContacts.count;
+    return self.filteredTokens.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:THContactPickerContactCellReuseID];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:THTokenEditTokenCellReuseID];
     if (cell == nil){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:THContactPickerContactCellReuseID];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:THTokenEditTokenCellReuseID];
     }
     
     [self configureCell:cell atIndexPath:indexPath];
     
-    if ([self.privateSelectedContacts containsObject:[self.filteredContacts objectAtIndex:indexPath.row]]){
+    if ([self.privateSelectedTokens containsObject:[self.filteredTokens objectAtIndex:indexPath.row]]){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -191,67 +191,67 @@ NSString *THContactPickerContactCellReuseID = @"THContactPickerContactCell";
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    id contact = [self.filteredContacts objectAtIndex:indexPath.row];
-    NSString *contactTilte = [self titleForRowAtIndexPath:indexPath];
+    id token = [self.filteredTokens objectAtIndex:indexPath.row];
+    NSString *tokenTilte = [self titleForRowAtIndexPath:indexPath];
     
-    if ([self.privateSelectedContacts containsObject:contact]){ // contact is already selected so remove it from ContactPickerView
+    if ([self.privateSelectedTokens containsObject:token]){ // token is already selected so remove it from TokenEditView
         cell.accessoryType = UITableViewCellAccessoryNone;
-        [self.privateSelectedContacts removeObject:contact];
-        [self.contactPickerView removeContact:contact];
+        [self.privateSelectedTokens removeObject:token];
+        [self.tokenEditView removeToken:token];
     } else {
-        // Contact has not been selected, add it to THContactPickerView
+        // Token has not been selected, add it to THTokenEditView
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        [self.privateSelectedContacts addObject:contact];
-        [self.contactPickerView addContact:contact withName:contactTilte];
+        [self.privateSelectedTokens addObject:token];
+        [self.tokenEditView addToken:token withName:tokenTilte];
 //		
 //		UIColor *color = [UIColor blueColor];
-//		if (self.privateSelectedContacts.count % 2 == 0){
+//		if (self.privateSelectedTokens.count % 2 == 0){
 //			color = [UIColor orangeColor];
-//		} else if (self.privateSelectedContacts.count % 3 == 0){
+//		} else if (self.privateSelectedTokens.count % 3 == 0){
 //			color = [UIColor purpleColor];
 //		}
-//		THContactViewStyle *style = [[THContactViewStyle alloc] initWithTextColor:[UIColor whiteColor] backgroundColor:color cornerRadiusFactor:2.0];
-//		THContactViewStyle *selectedStyle = [[THContactViewStyle alloc] initWithTextColor:[UIColor whiteColor] backgroundColor:[UIColor greenColor] cornerRadiusFactor:2.0];
-//		[self.contactPickerView addContact:contact withName:contactTilte withStyle:style andSelectedStyle:selectedStyle];
+//		THTokenViewStyle *style = [[THTokenViewStyle alloc] initWithTextColor:[UIColor whiteColor] backgroundColor:color cornerRadiusFactor:2.0];
+//		THTokenViewStyle *selectedStyle = [[THTokenViewStyle alloc] initWithTextColor:[UIColor whiteColor] backgroundColor:[UIColor greenColor] cornerRadiusFactor:2.0];
+//		[self.tokenEditView addToken:token withName:tokenTilte withStyle:style andSelectedStyle:selectedStyle];
     }
 	
-    self.filteredContacts = self.contacts;
+    self.filteredTokens = self.tokens;
     [self didChangeSelectedItems];
     [self.tableView reloadData];
 }
 
-#pragma mark - THContactPickerTextViewDelegate
+#pragma mark - THTokenEditTextViewDelegate
 
-- (void)contactPicker:(THContactPickerView *)contactPicker textFieldDidChange:(UITextField *)textField {
+- (void)tokenEdit:(THTokenEditView *)tokenEdit textFieldDidChange:(UITextField *)textField {
     if ([textField.text isEqualToString:@""]){
-        self.filteredContacts = self.contacts;
+        self.filteredTokens = self.tokens;
     } else {
         NSPredicate *predicate = [self newFilteringPredicateWithText:textField.text];
-        self.filteredContacts = [self.contacts filteredArrayUsingPredicate:predicate];
+        self.filteredTokens = [self.tokens filteredArrayUsingPredicate:predicate];
     }
     [self.tableView reloadData];
 }
 
-- (void)contactPickerDidResize:(THContactPickerView *)contactPickerView {
+- (void)tokenEditDidResize:(THTokenEditView *)tokenEditView {
     CGRect frame = self.tableView.frame;
-    frame.origin.y = contactPickerView.frame.size.height + contactPickerView.frame.origin.y;
+    frame.origin.y = tokenEditView.frame.size.height + tokenEditView.frame.origin.y;
     self.tableView.frame = frame;
 }
 
-- (void)contactPicker:(THContactPickerView *)contactPicker didRemoveContact:(id)contact {
-    [self.privateSelectedContacts removeObject:contact];
+- (void)tokenEdit:(THTokenEditView *)tokenEdit didRemoveToken:(id)token {
+    [self.privateSelectedTokens removeObject:token];
     
-    NSInteger index = [self.contacts indexOfObject:contact];
+    NSInteger index = [self.tokens indexOfObject:token];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     cell.accessoryType = UITableViewCellAccessoryNone;
     [self didChangeSelectedItems];
 }
 
-- (BOOL)contactPicker:(THContactPickerView *)contactPicker textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)tokenEdit:(THTokenEditView *)tokenEdit textFieldShouldReturn:(UITextField *)textField {
     if (textField.text.length > 0){
-        NSString *contact = [[NSString alloc] initWithString:textField.text];
-        [self.privateSelectedContacts addObject:contact];
-        [self.contactPickerView addContact:contact withName:textField.text];
+        NSString *token = [[NSString alloc] initWithString:textField.text];
+        [self.privateSelectedTokens addObject:token];
+        [self.tokenEditView addToken:token withName:textField.text];
     }
     return YES;
 }

@@ -1,14 +1,14 @@
 //
-//  THContactViewStyle.m
-//  ContactPicker
+//  THTokenViewStyle.m
+//  TokenEdit
 //
 //  Created by Dmitry Vorobjov on 12/6/12.
 //  Copyright (c) 2012 Tristan Himmelman. All rights reserved.
 //
 
-#import "THContactViewStyle.h"
+#import "THTokenViewStyle.h"
 
-@implementation THContactViewStyle
+@implementation THTokenViewStyle
 
 - (id)initWithTextColor:(UIColor *)textColor
 		backgroundColor:(UIColor *)backgroundColor

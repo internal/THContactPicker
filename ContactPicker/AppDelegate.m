@@ -1,13 +1,13 @@
 //
 //  AppDelegate.m
-//  ContactPicker
+//  TokenEdit
 //
 //  Created by Tristan Himmelman on 11/2/12.
 //  Copyright (c) 2012 Tristan Himmelman. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "THContactPickerViewControllerDemo.h"
+#import "THTokenEditViewController.h"
 
 @implementation AppDelegate
 
@@ -18,8 +18,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     
-    THContactPickerViewControllerDemo *contactPicker = [[THContactPickerViewControllerDemo alloc] initWithNibName:@"THContactPickerViewControllerDemo" bundle:nil];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:contactPicker];
+    THTokenEditViewController *tokenEdit = [[THTokenEditViewController alloc] initWithNibName:@"THTokenEditViewController" bundle:nil];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tokenEdit];
     
     self.window.rootViewController = navigationController;
     

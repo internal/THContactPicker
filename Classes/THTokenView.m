@@ -1,21 +1,21 @@
 //
-//  THContactView.m
-//  ContactPicker
+//  THtokenView.m
+//  tokenEdit
 //
 //  Created by Tristan Himmelman on 11/2/12.
 //  Copyright (c) 2012 Tristan Himmelman. All rights reserved.
 //
 
-#import "THContactView.h"
-#import "THContactTextField.h"
+#import "THTokenView.h"
+#import "THEditTextField.h"
 
-@interface THContactView ()<THContactTextFieldDelegate>{
+@interface THTokenView ()<THEditTextFieldDelegate>{
 	CGFloat _horizontalPadding;
 }
 
 @end
 
-@implementation THContactView
+@implementation THTokenView
 
 #define kHorizontalPadding 3
 #define kHorizontalPaddingWithBackground 8
@@ -51,11 +51,11 @@
     return [self initWithName:name style:nil selectedStyle:nil];
 }
 
-- (id)initWithName:(NSString *)name style:(THContactViewStyle *)style selectedStyle:(THContactViewStyle *)selectedStyle {
+- (id)initWithName:(NSString *)name style:(THTokenViewStyle *)style selectedStyle:(THTokenViewStyle *)selectedStyle {
     return [self initWithName:name style:style selectedStyle:selectedStyle showComma:NO];
 }
 
-- (id)initWithName:(NSString *)name style:(THContactViewStyle *)style selectedStyle:(THContactViewStyle *)selectedStyle showComma:(BOOL)showComma {
+- (id)initWithName:(NSString *)name style:(THTokenViewStyle *)style selectedStyle:(THTokenViewStyle *)selectedStyle showComma:(BOOL)showComma {
     self = [super init];
     if (self){
         self.name = name;
@@ -64,7 +64,7 @@
         
         // default styles
         if (style == nil) {
-            style = [[THContactViewStyle alloc] initWithTextColor:k7ColorText
+            style = [[THTokenViewStyle alloc] initWithTextColor:k7ColorText
                                                  gradientTop:k7ColorGradientTop
                                               gradientBottom:k7ColorGradientBottom
                                                  borderColor:k7ColorBorder
@@ -72,7 +72,7 @@
                                           cornerRadiusFactor:k7DefaultCornerRadiusFactor];
         }
         if (selectedStyle == nil) {
-            selectedStyle = [[THContactViewStyle alloc] initWithTextColor:k7ColorSelectedText
+            selectedStyle = [[THTokenViewStyle alloc] initWithTextColor:k7ColorSelectedText
                                                          gradientTop:k7ColorSelectedGradientTop
                                                       gradientBottom:k7ColorSelectedGradientBottom
                                                          borderColor:k7ColorSelectedBorder
@@ -105,7 +105,7 @@
     }
     [self addSubview:self.label];
     
-    self.textField = [[THContactTextField alloc] init];
+    self.textField = [[THEditTextField alloc] init];
 	self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.textField.delegate = self;
     self.textField.hidden = YES;
@@ -170,8 +170,8 @@
 }
 
 - (void)select {
-    if ([self.delegate respondsToSelector:@selector(contactViewWasSelected:)]){
-        [self.delegate contactViewWasSelected:self];
+    if ([self.delegate respondsToSelector:@selector(tokenViewWasSelected:)]){
+        [self.delegate tokenViewWasSelected:self];
     }
     
     CALayer *viewLayer = [self layer];
@@ -192,8 +192,8 @@
 }
 
 - (void)unSelect {
-    if ([self.delegate respondsToSelector:@selector(contactViewWasUnSelected:)]){
-        [self.delegate contactViewWasUnSelected:self];
+    if ([self.delegate respondsToSelector:@selector(tokenViewWasUnSelected:)]){
+        [self.delegate tokenViewWasUnSelected:self];
     }
     
     CALayer *viewLayer = [self layer];
@@ -226,20 +226,20 @@
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidHitBackspaceWithEmptyText:(THContactTextField *)textField {
+- (void)textFieldDidHitBackspaceWithEmptyText:(THEditTextField *)textField {
     self.textField.hidden = NO;
     
     // Capture "delete" key press when cell is empty
-    if ([self.delegate respondsToSelector:@selector(contactViewShouldBeRemoved:)]){
-        [self.delegate contactViewShouldBeRemoved:self];
+    if ([self.delegate respondsToSelector:@selector(tokenViewShouldBeRemoved:)]){
+        [self.delegate tokenViewShouldBeRemoved:self];
     }
 }
 
-- (void)textFieldDidChange:(THContactTextField *)textField {
+- (void)textFieldDidChange:(THEditTextField *)textField {
 	
     [self unSelect];
-    if ([self.delegate respondsToSelector:@selector(contactViewWasUnSelected:)]){
-        [self.delegate contactViewWasUnSelected:self];
+    if ([self.delegate respondsToSelector:@selector(tokenViewWasUnSelected:)]){
+        [self.delegate tokenViewWasUnSelected:self];
     }
 	self.textField.text = nil;
 }

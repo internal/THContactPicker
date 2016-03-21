@@ -1,42 +1,42 @@
 //
-//  THContactPickerView.m
-//  THContactPickerView
+//  THTokenEditView.m
+//  THTokenEditView
 //
 //  Created by Tristan Himmelman on 11/2/12, revised by mysteriouss.
 //  Copyright (c) 2012 Tristan Himmelman. All rights reserved.
 //
 
-#import "THContactPickerView.h"
-#import "THContactView.h"
-#import "THContactTextField.h"
+#import "THTokenEditView.h"
+#import "THTokenView.h"
+#import "THEditTextField.h"
 
-@interface THContactPickerView ()<THContactTextFieldDelegate>{
+@interface THTokenEditView ()<THEditTextFieldDelegate>{
     BOOL _shouldSelectTextField;
 	int _lineCount;
 	CGRect _frameOfLastView;
-	CGFloat _contactHorizontalPadding;
+	CGFloat _tokenHorizontalPadding;
 	BOOL _showComma;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) NSMutableDictionary *contacts;	// Dictionary to store THContactViews for each contacts
-@property (nonatomic, strong) NSMutableArray *contactKeys;      // an ordered set of the keys placed in the contacts dictionary
+@property (nonatomic, strong) NSMutableDictionary *tokens;	// Dictionary to store THTokenViews for each tokens
+@property (nonatomic, strong) NSMutableArray *tokenKeys;      // an ordered set of the keys placed in the tokens dictionary
 @property (nonatomic, strong) UILabel *placeholderLabel;
 @property (nonatomic, strong) UILabel *promptLabel;
 @property (nonatomic, assign) CGFloat lineHeight;
-@property (nonatomic, strong) THContactTextField *textField;
-@property (nonatomic, strong) THContactViewStyle *contactViewStyle;
-@property (nonatomic, strong) THContactViewStyle *contactViewSelectedStyle;
+@property (nonatomic, strong) THEditTextField *textField;
+@property (nonatomic, strong) THTokenViewStyle *tokenViewStyle;
+@property (nonatomic, strong) THTokenViewStyle *tokenViewSelectedStyle;
 
 @end
 
-@implementation THContactPickerView
+@implementation THTokenEditView
 
 #define kVerticalViewPadding				5   // the amount of padding on top and bottom of the view
-#define kHorizontalPadding					0   // the amount of padding to the left and right of each contact view
-#define kHorizontalPaddingWithBackground	2   // the amount of padding to the left and right of each contact view (when bubbles have a non white background)
+#define kHorizontalPadding					0   // the amount of padding to the left and right of each token view
+#define kHorizontalPaddingWithBackground	2   // the amount of padding to the left and right of each token view (when bubbles have a non white background)
 #define kHorizontalSidePadding				10  // the amount of padding on the left and right of the view
-#define kVerticalPadding					2   // amount of padding above and below each contact view
+#define kVerticalPadding					2   // amount of padding above and below each token view
 #define kTextFieldMinWidth					20  // minimum width of trailing text view
 #define KMaxNumberOfLinesDefault			2
 
@@ -61,10 +61,10 @@
     self.verticalPadding = kVerticalViewPadding;
 	self.maxNumberOfLines = KMaxNumberOfLinesDefault;
 	
-    self.contacts = [NSMutableDictionary dictionary];
-    self.contactKeys = [NSMutableArray array];
+    self.tokens = [NSMutableDictionary dictionary];
+    self.tokenKeys = [NSMutableArray array];
     
-    // Create a contact view to determine the height of a line
+    // Create a token view to determine the height of a line
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     self.scrollView.scrollsToTop = NO;
     self.scrollView.delegate = self;
@@ -84,7 +84,7 @@
     [self.scrollView addSubview:self.promptLabel];
     
     // Create TextField
-    self.textField = [[THContactTextField alloc] init];
+    self.textField = [[THEditTextField alloc] init];
     self.textField.delegate = self;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     
@@ -96,10 +96,10 @@
     [self addGestureRecognizer:tapGesture];
     
     //default settings
-    THContactView *contactView = [[THContactView alloc] initWithName:@""];
-    self.contactViewStyle = contactView.style;
-    self.contactViewSelectedStyle = contactView.selectedStyle;
-    self.font = contactView.label.font;
+    THTokenView *tokenView = [[THTokenView alloc] initWithName:@""];
+    self.tokenViewStyle = tokenView.style;
+    self.tokenViewSelectedStyle = tokenView.selectedStyle;
+    self.font = tokenView.label.font;
 }
 
 #pragma mark - Public functions
@@ -107,10 +107,10 @@
 - (void)setFont:(UIFont *)font {
     _font = font;
 	
-    // Create a contact view to determine the height of a line
-    THContactView *contactView = [[THContactView alloc] initWithName:@"Sample"];
-    [contactView setFont:font];
-    self.lineHeight = contactView.frame.size.height + 2 * kVerticalPadding;
+    // Create a token view to determine the height of a line
+    THTokenView *tokenView = [[THTokenView alloc] initWithName:@"Sample"];
+    [tokenView setFont:font];
+    self.lineHeight = tokenView.frame.size.height + 2 * kVerticalPadding;
     
     self.textField.font = font;
     [self.textField sizeToFit];
@@ -152,52 +152,52 @@
     [super setBackgroundColor:backgroundColor];
 }
 
-- (void)addContact:(id)contact withName:(NSString *)name {
-	[self addContact:contact withName:name withStyle:self.contactViewStyle andSelectedStyle:self.contactViewSelectedStyle];
+- (void)addToken:(id)token withName:(NSString *)name {
+	[self addToken:token withName:name withStyle:self.tokenViewStyle andSelectedStyle:self.tokenViewSelectedStyle];
 }
 
-- (void)addContact:(id)contact withName:(NSString *)name withStyle:(THContactViewStyle *)bubbleStyle andSelectedStyle:(THContactViewStyle *)selectedStyle {
-    id contactKey = [NSValue valueWithNonretainedObject:contact];
-    if ([self.contactKeys containsObject:contactKey]){
-        NSLog(@"Cannot add the same object twice to ContactPickerView");
+- (void)addToken:(id)token withName:(NSString *)name withStyle:(THTokenViewStyle *)bubbleStyle andSelectedStyle:(THTokenViewStyle *)selectedStyle {
+    id tokenKey = [NSValue valueWithNonretainedObject:token];
+    if ([self.tokenKeys containsObject:tokenKey]){
+        NSLog(@"Cannot add the same object twice to TokenEditView");
         return;
     }
     
-    if (self.contactKeys.count == 1 && self.limitToOne){
-        THContactView *contactView = [self.contacts objectForKey:[self.contactKeys firstObject]];
-        [self removeContactView:contactView];
+    if (self.tokenKeys.count == 1 && self.limitToOne){
+        THTokenView *tokenView = [self.tokens objectForKey:[self.tokenKeys firstObject]];
+        [self removeTokenView:tokenView];
     }
     
     self.textField.text = @"";
 	
 	if ([bubbleStyle hasNonWhiteBackground]){
-		_contactHorizontalPadding = kHorizontalPaddingWithBackground;
+		_tokenHorizontalPadding = kHorizontalPaddingWithBackground;
 		_showComma = NO;
 	} else {
-		_contactHorizontalPadding = kHorizontalPadding;
+		_tokenHorizontalPadding = kHorizontalPadding;
 		_showComma = !self.limitToOne;
 	}
 	
-    THContactView *contactView = [[THContactView alloc] initWithName:name style:bubbleStyle selectedStyle:selectedStyle showComma:_showComma];
-    contactView.maxWidth = self.frame.size.width - self.promptLabel.frame.origin.x - 2 * _contactHorizontalPadding - 2 * kHorizontalSidePadding;
-    contactView.minWidth = kTextFieldMinWidth + 2 * _contactHorizontalPadding;
-    contactView.keyboardAppearance = self.keyboardAppearance;
-    contactView.returnKeyType = self.returnKeyType;
-    contactView.delegate = self;
-    [contactView setFont:self.font];
+    THTokenView *tokenView = [[THTokenView alloc] initWithName:name style:bubbleStyle selectedStyle:selectedStyle showComma:_showComma];
+    tokenView.maxWidth = self.frame.size.width - self.promptLabel.frame.origin.x - 2 * _tokenHorizontalPadding - 2 * kHorizontalSidePadding;
+    tokenView.minWidth = kTextFieldMinWidth + 2 * _tokenHorizontalPadding;
+    tokenView.keyboardAppearance = self.keyboardAppearance;
+    tokenView.returnKeyType = self.returnKeyType;
+    tokenView.delegate = self;
+    [tokenView setFont:self.font];
     
-    [self.contacts setObject:contactView forKey:contactKey];
-    [self.contactKeys addObject:contactKey];
+    [self.tokens setObject:tokenView forKey:tokenKey];
+    [self.tokenKeys addObject:tokenKey];
     
-    if (self.selectedContactView){
-        // if there is a selected contact, deselect it
-        [self.selectedContactView unSelect];
-        self.selectedContactView = nil;
+    if (self.selectedTokenView){
+        // if there is a selected token, deselect it
+        [self.selectedTokenView unSelect];
+        self.selectedTokenView = nil;
         [self selectTextField];
     }
     
-    // update the position of the contacts
-    [self layoutContactViews];
+    // update the position of the tokens
+    [self layoutTokenViews];
     
     // update size of the scrollView
     [UIView animateWithDuration:0.2 animations:^{
@@ -215,13 +215,13 @@
     [self.textField becomeFirstResponder];
 }
 
-- (void)removeAllContacts {
-    for (id contact in [self.contacts allKeys]){
-      THContactView *contactView = [self.contacts objectForKey:contact];
-      [contactView removeFromSuperview];
+- (void)removeAllTokens {
+    for (id token in [self.tokens allKeys]){
+      THTokenView *tokenView = [self.tokens objectForKey:token];
+      [tokenView removeFromSuperview];
     }
-    [self.contacts removeAllObjects];
-    [self.contactKeys removeAllObjects];
+    [self.tokens removeAllObjects];
+    [self.tokenKeys removeAllObjects];
   
     // update layout
     [self setNeedsLayout];
@@ -230,9 +230,9 @@
     self.textField.text = @"";
 }
 
-- (void)removeContact:(id)contact {
-    id contactKey = [NSValue valueWithNonretainedObject:contact];
-	[self removeContactByKey:contactKey];
+- (void)removeToken:(id)token {
+    id tokenKey = [NSValue valueWithNonretainedObject:token];
+	[self removeTokenByKey:tokenKey];
 }
 
 - (void)setPlaceholderLabelText:(NSString *)text {
@@ -252,7 +252,7 @@
 - (BOOL)isFirstResponder {
 	if ([self.textField isFirstResponder]){
 		return YES;
-	} else if (self.selectedContactView != nil){
+	} else if (self.selectedTokenView != nil){
 		return YES;
 	}
 	return NO;
@@ -264,22 +264,22 @@
     [self setNeedsLayout];
 }
 
-- (void)setContactViewStyle:(THContactViewStyle *)style selectedStyle:(THContactViewStyle *)selectedStyle {
-    self.contactViewStyle = style;
+- (void)setTokenViewStyle:(THTokenViewStyle *)style selectedStyle:(THTokenViewStyle *)selectedStyle {
+    self.tokenViewStyle = style;
     self.textField.textColor = style.textColor;
-    self.contactViewSelectedStyle = selectedStyle;
+    self.tokenViewSelectedStyle = selectedStyle;
 
-    for (id contactKey in self.contactKeys){
-        THContactView *contactView = (THContactView *)[self.contacts objectForKey:contactKey];
+    for (id tokenKey in self.tokenKeys){
+        THTokenView *tokenView = (THTokenView *)[self.tokens objectForKey:tokenKey];
 
-        contactView.style = style;
-        contactView.selectedStyle = selectedStyle;
+        tokenView.style = style;
+        tokenView.selectedStyle = selectedStyle;
 
         // this stuff reloads view
-        if (contactView.isSelected){
-            [contactView select];
+        if (tokenView.isSelected){
+            [tokenView select];
         } else {
-            [contactView unSelect];
+            [tokenView unSelect];
         }
     }
 }
@@ -297,45 +297,45 @@
         
         [self.scrollView scrollRectToVisible:frame animated:animated];
     } else {
-        // this block is here because scrollRectToVisible with animated NO causes crashes on iOS 5 when the user tries to delete many contacts really quickly
+        // this block is here because scrollRectToVisible with animated NO causes crashes on iOS 5 when the user tries to delete many tokens really quickly
         CGPoint offset = self.scrollView.contentOffset;
         offset.y = self.scrollView.contentSize.height - self.scrollView.frame.size.height;
         self.scrollView.contentOffset = offset;
     }
 }
 
-- (void)removeContactView:(THContactView *)contactView {
-    id contact = [self contactForContactView:contactView];
+- (void)removeTokenView:(THTokenView *)tokenView {
+    id token = [self tokenForTokenView:tokenView];
     
-    if (contact == nil){
+    if (token == nil){
         return;
     }
     
-    if ([self.delegate respondsToSelector:@selector(contactPicker:didRemoveContact:)]){
-        [self.delegate contactPicker:self didRemoveContact:[contact nonretainedObjectValue]];
+    if ([self.delegate respondsToSelector:@selector(tokenEdit:didRemoveToken:)]){
+        [self.delegate tokenEdit:self didRemoveToken:[token nonretainedObjectValue]];
     }
     
-    [self removeContactByKey:contact];
+    [self removeTokenByKey:token];
     [self selectTextField];
 
-    if (self.selectedContactView == contactView) {
-        self.selectedContactView = nil;
+    if (self.selectedTokenView == tokenView) {
+        self.selectedTokenView = nil;
     }
 }
 
-- (void)removeContactByKey:(id)contactKey {
-    // Remove contactView from view
-    THContactView *contactView = [self.contacts objectForKey:contactKey];
-    [contactView removeFromSuperview];
+- (void)removeTokenByKey:(id)tokenKey {
+    // Remove tokenView from view
+    THTokenView *tokenView = [self.tokens objectForKey:tokenKey];
+    [tokenView removeFromSuperview];
   
-    // Remove contact from memory
-    [self.contacts removeObjectForKey:contactKey];
-    [self.contactKeys removeObject:contactKey];
+    // Remove token from memory
+    [self.tokens removeObjectForKey:tokenKey];
+    [self.tokenKeys removeObject:tokenKey];
 
 	self.textField.text = @"";
 
 	// update layout
-	[self layoutContactViews];
+	[self layoutTokenViews];
 	
 	// animate resizing of view
 	[UIView animateWithDuration:0.2 animations:^{
@@ -345,12 +345,12 @@
 	}];
 }
 
-- (id)contactForContactView:(THContactView *)contactView {
-    NSArray *keys = [self.contacts allKeys];
+- (id)tokenForTokenView:(THTokenView *)tokenView {
+    NSArray *keys = [self.tokens allKeys];
     
-    for (id contact in keys){
-        if ([[self.contacts objectForKey:contact] isEqual:contactView]){
-            return contact;
+    for (id token in keys){
+        if ([[self.tokens objectForKey:token] isEqual:tokenView]){
+            return token;
         }
     }
     return nil;
@@ -370,60 +370,60 @@
     }
 }
 
-- (void)layoutContactViews {
+- (void)layoutTokenViews {
 	_frameOfLastView = CGRectNull;
 	_lineCount = 0;
 	
-	// Loop through contacts and position/add them to the view
-	for (id contactKey in self.contactKeys){
-		THContactView *contactView = (THContactView *)[self.contacts objectForKey:contactKey];
-		CGRect contactViewFrame = contactView.frame;
+	// Loop through tokens and position/add them to the view
+	for (id tokenKey in self.tokenKeys){
+		THTokenView *tokenView = (THTokenView *)[self.tokens objectForKey:tokenKey];
+		CGRect tokenViewFrame = tokenView.frame;
 		
 		if (CGRectIsNull(_frameOfLastView)){
-			// First contact view
-			contactViewFrame.origin.x = [self firstLineXOffset];
-			contactViewFrame.origin.y = kVerticalPadding + self.verticalPadding;
+			// First token view
+			tokenViewFrame.origin.x = [self firstLineXOffset];
+			tokenViewFrame.origin.y = kVerticalPadding + self.verticalPadding;
 		} else {
-			// Check if contact view will fit on the current line
-			CGFloat width = contactViewFrame.size.width + 2 * _contactHorizontalPadding;
+			// Check if token view will fit on the current line
+			CGFloat width = tokenViewFrame.size.width + 2 * _tokenHorizontalPadding;
 			if (self.frame.size.width - kHorizontalSidePadding - _frameOfLastView.origin.x - _frameOfLastView.size.width - width >= 0){
 				// add to the same line
-				// Place contact view just after last contact view on the same line
-				contactViewFrame.origin.x = _frameOfLastView.origin.x + _frameOfLastView.size.width + _contactHorizontalPadding * 2;
-				contactViewFrame.origin.y = _frameOfLastView.origin.y;
+				// Place token view just after last token view on the same line
+				tokenViewFrame.origin.x = _frameOfLastView.origin.x + _frameOfLastView.size.width + _tokenHorizontalPadding * 2;
+				tokenViewFrame.origin.y = _frameOfLastView.origin.y;
 			} else {
 				// No space on current line, jump to next line
 				_lineCount++;
-				contactViewFrame.origin.x = kHorizontalSidePadding;
-				contactViewFrame.origin.y = (_lineCount * self.lineHeight) + kVerticalPadding + self.verticalPadding;
+				tokenViewFrame.origin.x = kHorizontalSidePadding;
+				tokenViewFrame.origin.y = (_lineCount * self.lineHeight) + kVerticalPadding + self.verticalPadding;
 			}
 		}
-		_frameOfLastView = contactViewFrame;
-		contactView.frame = contactViewFrame;
+		_frameOfLastView = tokenViewFrame;
+		tokenView.frame = tokenViewFrame;
 		
-		// Add contact view if it hasn't been added
-		if (contactView.superview == nil){
-			[self.scrollView addSubview:contactView];
+		// Add token view if it hasn't been added
+		if (tokenView.superview == nil){
+			[self.scrollView addSubview:tokenView];
 		}
 	}
 	
-	// Now add the textField after the contact views
-	CGFloat minWidth = kTextFieldMinWidth + 2 * _contactHorizontalPadding;
+	// Now add the textField after the token views
+	CGFloat minWidth = kTextFieldMinWidth + 2 * _tokenHorizontalPadding;
 	CGFloat textFieldHeight = self.lineHeight - 2 * kVerticalPadding;
 	CGRect textFieldFrame = CGRectMake(0, 0, self.textField.frame.size.width, textFieldHeight);
 	
-	// Check if we can add the text field on the same line as the last contact view
+	// Check if we can add the text field on the same line as the last token view
 	if (self.frame.size.width - kHorizontalSidePadding - _frameOfLastView.origin.x - _frameOfLastView.size.width - minWidth >= 0){ // add to the same line
-		textFieldFrame.origin.x = _frameOfLastView.origin.x + _frameOfLastView.size.width + _contactHorizontalPadding;
+		textFieldFrame.origin.x = _frameOfLastView.origin.x + _frameOfLastView.size.width + _tokenHorizontalPadding;
 		textFieldFrame.size.width = self.frame.size.width - textFieldFrame.origin.x;
 	} else {
 		// place text view on the next line
 		_lineCount++;
 		
 		textFieldFrame.origin.x = kHorizontalSidePadding;
-		textFieldFrame.size.width = self.frame.size.width - 2 * _contactHorizontalPadding;
+		textFieldFrame.size.width = self.frame.size.width - 2 * _tokenHorizontalPadding;
 		
-		if (self.contacts.count == 0){
+		if (self.tokens.count == 0){
 			_lineCount = 0;
 			textFieldFrame.origin.x = [self firstLineXOffset];
 			textFieldFrame.size.width = self.bounds.size.width - textFieldFrame.origin.x;
@@ -440,14 +440,14 @@
 		[self.scrollView addSubview:self.textField];
 	}
 	
-	// Hide the text view if we are limiting number of selected contacts to 1 and a contact has already been added
-	if (self.limitToOne && self.contacts.count >= 1){
+	// Hide the text view if we are limiting number of selected tokens to 1 and a token has already been added
+	if (self.limitToOne && self.tokens.count >= 1){
 		self.textField.hidden = YES;
 		_lineCount = 0;
 	}
 	
-	// Show placeholder if no there are no contacts
-    if ([self.textField.text isEqualToString:@""] && self.contacts.count == 0 ){
+	// Show placeholder if no there are no tokens
+    if ([self.textField.text isEqualToString:@""] && self.tokens.count == 0 ){
 		self.placeholderLabel.hidden = NO;
 	} else {
 		self.placeholderLabel.hidden = YES;
@@ -457,7 +457,7 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	
-	[self layoutContactViews];
+	[self layoutTokenViews];
 	
 	[self layoutScrollView];
 }
@@ -481,35 +481,35 @@
 		frame.size.height = newHeight;
 		self.scrollView.frame = frame;
 		
-		if ([self.delegate respondsToSelector:@selector(contactPickerDidResize:)]){
-			[self.delegate contactPickerDidResize:self];
+		if ([self.delegate respondsToSelector:@selector(tokenEditDidResize:)]){
+			[self.delegate tokenEditDidResize:self];
 		}
 	}
 }
 
-#pragma mark - THContactTextFieldDelegate
+#pragma mark - THTokenTextFieldDelegate
 
-- (void)textFieldDidHitBackspaceWithEmptyText:(THContactTextField *)textField {
+- (void)textFieldDidHitBackspaceWithEmptyText:(THEditTextField *)textField {
     self.textField.hidden = NO;
     
-    if (self.contacts.count) {
+    if (self.tokens.count) {
         // Capture "delete" key press when cell is empty
-        self.selectedContactView = [self.contacts objectForKey:[self.contactKeys lastObject]];
-        [self.selectedContactView select];
+        self.selectedTokenView = [self.tokens objectForKey:[self.tokenKeys lastObject]];
+        [self.selectedTokenView select];
     } else {
-        if ([self.delegate respondsToSelector:@selector(contactPicker:textFieldDidChange:)]){
-            [self.delegate contactPicker:self textFieldDidChange:textField];
+        if ([self.delegate respondsToSelector:@selector(tokenEdit:textFieldDidChange:)]){
+            [self.delegate tokenEdit:self textFieldDidChange:textField];
         }
     }
 }
 
-- (void)textFieldDidChange:(THContactTextField *)textField {
-    if ([self.delegate respondsToSelector:@selector(contactPicker:textFieldDidChange:)]
+- (void)textFieldDidChange:(THEditTextField *)textField {
+    if ([self.delegate respondsToSelector:@selector(tokenEdit:textFieldDidChange:)]
         && !self.textField.markedTextRange) {
-        [self.delegate contactPicker:self textFieldDidChange:textField];
+        [self.delegate tokenEdit:self textFieldDidChange:textField];
     }
 
-    if ([textField.text isEqualToString:@""] && self.contacts.count == 0){
+    if ([textField.text isEqualToString:@""] && self.tokens.count == 0){
         self.placeholderLabel.hidden = NO;
     } else {
         self.placeholderLabel.hidden = YES;
@@ -523,35 +523,35 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	if ([self.delegate respondsToSelector:@selector(contactPicker:textFieldShouldReturn:)]){
-		return [self.delegate contactPicker:self textFieldShouldReturn:textField];
+	if ([self.delegate respondsToSelector:@selector(tokenEdit:textFieldShouldReturn:)]){
+		return [self.delegate tokenEdit:self textFieldShouldReturn:textField];
 	}
 	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-   	if ([self.delegate respondsToSelector:@selector(contactPicker:textFieldDidBeginEditing:)]){
-        [self.delegate contactPicker:self textFieldDidBeginEditing:textField];
+   	if ([self.delegate respondsToSelector:@selector(tokenEdit:textFieldDidBeginEditing:)]){
+        [self.delegate tokenEdit:self textFieldDidBeginEditing:textField];
     }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-   	if ([self.delegate respondsToSelector:@selector(contactPicker:textFieldDidEndEditing:)]){
-        [self.delegate contactPicker:self textFieldDidEndEditing:textField];
+   	if ([self.delegate respondsToSelector:@selector(tokenEdit:textFieldDidEndEditing:)]){
+        [self.delegate tokenEdit:self textFieldDidEndEditing:textField];
     }
 }
 
-#pragma mark - THContactViewDelegate Functions
+#pragma mark - THTokenViewDelegate Functions
 
-- (void)contactViewWasSelected:(THContactView *)contactView {
-    if (self.selectedContactView != nil){
-        [self.selectedContactView unSelect];
+- (void)tokenViewWasSelected:(THTokenView *)tokenView {
+    if (self.selectedTokenView != nil){
+        [self.selectedTokenView unSelect];
     }
-    self.selectedContactView = contactView;
+    self.selectedTokenView = tokenView;
     
-    id contact = [self contactForContactView:contactView];
-    if ([self.delegate respondsToSelector:@selector(contactPicker:didSelectContact:)]){
-        [self.delegate contactPicker:self didSelectContact:[contact nonretainedObjectValue]];
+    id token = [self tokenForTokenView:tokenView];
+    if ([self.delegate respondsToSelector:@selector(tokenEdit:didSelectToken:)]){
+        [self.delegate tokenEdit:self didSelectToken:[token nonretainedObjectValue]];
     }
     
     [self.textField resignFirstResponder];
@@ -559,15 +559,15 @@
     self.textField.hidden = YES;
 }
 
-- (void)contactViewWasUnSelected:(THContactView *)contactView {
-    if (self.selectedContactView == contactView){
-        self.selectedContactView = nil;
+- (void)tokenViewWasUnSelected:(THTokenView *)tokenView {
+    if (self.selectedTokenView == tokenView){
+        self.selectedTokenView = nil;
     }
 
     [self selectTextField];
-	// transfer the text fromt he textField within the ContactView if there was any
-	// ***This is important if the user starts to type when a contact view is selected
-    self.textField.text = contactView.textField.text;
+	// transfer the text fromt he textField within the TokenView if there was any
+	// ***This is important if the user starts to type when a token view is selected
+    self.textField.text = tokenView.textField.text;
 
 	// trigger textFieldDidChange if there is text in the textField
 	if (self.textField.text.length > 0){
@@ -575,14 +575,14 @@
 	}
 }
 
-- (void)contactViewShouldBeRemoved:(THContactView *)contactView {
-    [self removeContactView:contactView];
+- (void)tokenViewShouldBeRemoved:(THTokenView *)tokenView {
+    [self removeTokenView:tokenView];
 }
 
 #pragma mark - Gesture Recognizer
 
 - (void)handleTapGesture {
-    if (self.limitToOne && self.contactKeys.count == 1){
+    if (self.limitToOne && self.tokenKeys.count == 1){
         return;
     }
     [self scrollToBottomWithAnimation:YES];
@@ -590,9 +590,9 @@
     // Show textField
     [self selectTextField];
     
-    // Unselect contact view
-    [self.selectedContactView unSelect];
-    self.selectedContactView = nil;
+    // Unselect token view
+    [self.selectedTokenView unSelect];
+    self.selectedTokenView = nil;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -608,8 +608,8 @@
 
 - (void)setKeyboardAppearance:(UIKeyboardAppearance)keyboardAppearance {
     self.textField.keyboardAppearance = keyboardAppearance;
-    for (THContactView *contactView in self.contacts) {
-        contactView.keyboardAppearance = keyboardAppearance;
+    for (THTokenView *tokenView in self.tokens) {
+        tokenView.keyboardAppearance = keyboardAppearance;
     }
 }
 
@@ -619,8 +619,8 @@
 
 - (void)setReturnKeyType:(UIReturnKeyType)returnKeyType {
     self.textField.returnKeyType = returnKeyType;
-    for (THContactView *contactView in self.contacts) {
-        contactView.returnKeyType = returnKeyType;
+    for (THTokenView *tokenView in self.tokens) {
+        tokenView.returnKeyType = returnKeyType;
     }
 }
 

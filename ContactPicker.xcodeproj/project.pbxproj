@@ -19,12 +19,12 @@
 		6A7586D81A3523380014433A /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A7586D71A3523380014433A /* Launch Screen.xib */; };
 		6A7586DA1A354F150014433A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7586D91A354F150014433A /* Assets.xcassets */; };
 		6AE31FCC1644DB2C00505230 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AE31FCB1644DB2C00505230 /* QuartzCore.framework */; };
-		6B3B2DED183260AC00798513 /* THContactPickerViewControllerDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DEC183260AC00798513 /* THContactPickerViewControllerDemo.m */; };
-		6B3B2DEF1832679900798513 /* THContactPickerViewControllerDemo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B3B2DEE1832679900798513 /* THContactPickerViewControllerDemo.xib */; };
-		6B3B2DF9183267B900798513 /* THContactViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF2183267B900798513 /* THContactViewStyle.m */; };
-		6B3B2DFA183267B900798513 /* THContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF4183267B900798513 /* THContactView.m */; };
-		6B3B2DFB183267B900798513 /* THContactPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF6183267B900798513 /* THContactPickerView.m */; };
-		7D951FC119222B6800EFAAB4 /* THContactTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D951FC019222B6800EFAAB4 /* THContactTextField.m */; };
+		6B3B2DED183260AC00798513 /* THTokenEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DEC183260AC00798513 /* THTokenEditViewController.m */; };
+		6B3B2DEF1832679900798513 /* THTokenEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B3B2DEE1832679900798513 /* THTokenEditViewController.xib */; };
+		6B3B2DF9183267B900798513 /* THTokenViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF2183267B900798513 /* THTokenViewStyle.m */; };
+		6B3B2DFA183267B900798513 /* THTokenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF4183267B900798513 /* THTokenView.m */; };
+		6B3B2DFB183267B900798513 /* THTokenEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3B2DF6183267B900798513 /* THTokenEditView.m */; };
+		7D951FC119222B6800EFAAB4 /* THEditTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D951FC019222B6800EFAAB4 /* THEditTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,17 +44,17 @@
 		6A7586D71A3523380014433A /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		6A7586D91A354F150014433A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6AE31FCB1644DB2C00505230 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		6B3B2DEB183260AC00798513 /* THContactPickerViewControllerDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THContactPickerViewControllerDemo.h; sourceTree = "<group>"; };
-		6B3B2DEC183260AC00798513 /* THContactPickerViewControllerDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THContactPickerViewControllerDemo.m; sourceTree = "<group>"; };
-		6B3B2DEE1832679900798513 /* THContactPickerViewControllerDemo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THContactPickerViewControllerDemo.xib; sourceTree = "<group>"; };
-		6B3B2DF1183267B900798513 /* THContactViewStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THContactViewStyle.h; sourceTree = "<group>"; };
-		6B3B2DF2183267B900798513 /* THContactViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THContactViewStyle.m; sourceTree = "<group>"; };
-		6B3B2DF3183267B900798513 /* THContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THContactView.h; sourceTree = "<group>"; };
-		6B3B2DF4183267B900798513 /* THContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THContactView.m; sourceTree = "<group>"; };
-		6B3B2DF5183267B900798513 /* THContactPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THContactPickerView.h; sourceTree = "<group>"; };
-		6B3B2DF6183267B900798513 /* THContactPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THContactPickerView.m; sourceTree = "<group>"; };
-		7D951FBF19222B6800EFAAB4 /* THContactTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THContactTextField.h; sourceTree = "<group>"; };
-		7D951FC019222B6800EFAAB4 /* THContactTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THContactTextField.m; sourceTree = "<group>"; };
+		6B3B2DEB183260AC00798513 /* THTokenEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THTokenEditViewController.h; path = ../ContactPicker/THTokenEditViewController.h; sourceTree = "<group>"; };
+		6B3B2DEC183260AC00798513 /* THTokenEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THTokenEditViewController.m; path = ../ContactPicker/THTokenEditViewController.m; sourceTree = "<group>"; };
+		6B3B2DEE1832679900798513 /* THTokenEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = THTokenEditViewController.xib; path = ../ContactPicker/THTokenEditViewController.xib; sourceTree = "<group>"; };
+		6B3B2DF1183267B900798513 /* THTokenViewStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THTokenViewStyle.h; sourceTree = "<group>"; };
+		6B3B2DF2183267B900798513 /* THTokenViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THTokenViewStyle.m; sourceTree = "<group>"; };
+		6B3B2DF3183267B900798513 /* THTokenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THTokenView.h; sourceTree = "<group>"; };
+		6B3B2DF4183267B900798513 /* THTokenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THTokenView.m; sourceTree = "<group>"; };
+		6B3B2DF5183267B900798513 /* THTokenEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THTokenEditView.h; sourceTree = "<group>"; };
+		6B3B2DF6183267B900798513 /* THTokenEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THTokenEditView.m; sourceTree = "<group>"; };
+		7D951FBF19222B6800EFAAB4 /* THEditTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THEditTextField.h; sourceTree = "<group>"; };
+		7D951FC019222B6800EFAAB4 /* THEditTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THEditTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +107,6 @@
 				29A71BF616448250005286F1 /* AppDelegate.h */,
 				29A71BF716448250005286F1 /* AppDelegate.m */,
 				29A71BEE1644824F005286F1 /* Supporting Files */,
-				6B3B2DEB183260AC00798513 /* THContactPickerViewControllerDemo.h */,
-				6B3B2DEC183260AC00798513 /* THContactPickerViewControllerDemo.m */,
-				6B3B2DEE1832679900798513 /* THContactPickerViewControllerDemo.xib */,
 				6A7586D71A3523380014433A /* Launch Screen.xib */,
 				6A7586D91A354F150014433A /* Assets.xcassets */,
 			);
@@ -133,14 +130,17 @@
 		6B3B2DF0183267B900798513 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				6B3B2DF1183267B900798513 /* THContactViewStyle.h */,
-				6B3B2DF2183267B900798513 /* THContactViewStyle.m */,
-				6B3B2DF3183267B900798513 /* THContactView.h */,
-				6B3B2DF4183267B900798513 /* THContactView.m */,
-				6B3B2DF5183267B900798513 /* THContactPickerView.h */,
-				6B3B2DF6183267B900798513 /* THContactPickerView.m */,
-				7D951FBF19222B6800EFAAB4 /* THContactTextField.h */,
-				7D951FC019222B6800EFAAB4 /* THContactTextField.m */,
+				6B3B2DF1183267B900798513 /* THTokenViewStyle.h */,
+				6B3B2DF2183267B900798513 /* THTokenViewStyle.m */,
+				6B3B2DF3183267B900798513 /* THTokenView.h */,
+				6B3B2DF4183267B900798513 /* THTokenView.m */,
+				7D951FBF19222B6800EFAAB4 /* THEditTextField.h */,
+				7D951FC019222B6800EFAAB4 /* THEditTextField.m */,
+				6B3B2DF5183267B900798513 /* THTokenEditView.h */,
+				6B3B2DF6183267B900798513 /* THTokenEditView.m */,
+				6B3B2DEB183260AC00798513 /* THTokenEditViewController.h */,
+				6B3B2DEC183260AC00798513 /* THTokenEditViewController.m */,
+				6B3B2DEE1832679900798513 /* THTokenEditViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
@@ -199,7 +199,7 @@
 				29A71BF216448250005286F1 /* InfoPlist.strings in Resources */,
 				29A71BFA16448250005286F1 /* Default.png in Resources */,
 				29A71BFC16448250005286F1 /* Default@2x.png in Resources */,
-				6B3B2DEF1832679900798513 /* THContactPickerViewControllerDemo.xib in Resources */,
+				6B3B2DEF1832679900798513 /* THTokenEditViewController.xib in Resources */,
 				6A7586DA1A354F150014433A /* Assets.xcassets in Resources */,
 				29A71BFE16448250005286F1 /* Default-568h@2x.png in Resources */,
 				6A7586D81A3523380014433A /* Launch Screen.xib in Resources */,
@@ -214,12 +214,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				29A71BF416448250005286F1 /* main.m in Sources */,
-				6B3B2DFB183267B900798513 /* THContactPickerView.m in Sources */,
-				6B3B2DFA183267B900798513 /* THContactView.m in Sources */,
+				6B3B2DFB183267B900798513 /* THTokenEditView.m in Sources */,
+				6B3B2DFA183267B900798513 /* THTokenView.m in Sources */,
 				29A71BF816448250005286F1 /* AppDelegate.m in Sources */,
-				6B3B2DED183260AC00798513 /* THContactPickerViewControllerDemo.m in Sources */,
-				7D951FC119222B6800EFAAB4 /* THContactTextField.m in Sources */,
-				6B3B2DF9183267B900798513 /* THContactViewStyle.m in Sources */,
+				6B3B2DED183260AC00798513 /* THTokenEditViewController.m in Sources */,
+				7D951FC119222B6800EFAAB4 /* THEditTextField.m in Sources */,
+				6B3B2DF9183267B900798513 /* THTokenViewStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

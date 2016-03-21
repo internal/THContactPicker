@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'ContactPicker' target in the 'ContactPicker' project
+// Prefix header for all source files of the 'TokenEdit' target in the 'TokenEdit' project
 //
 
 #import <Availability.h>

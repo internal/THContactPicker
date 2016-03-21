@@ -1,14 +1,14 @@
 //
-//  THContactTextField.m
-//  ContactPicker
+//  THTokenTextField.m
+//  TokenEdit
 //
 //  Created by mysteriouss on 14-5-13.
 //  Copyright (c) 2014 mysteriouss. All rights reserved.
 //
 
-#import "THContactTextField.h"
+#import "THEditTextField.h"
 
-@implementation THContactTextField
+@implementation THEditTextField
 
 @dynamic delegate;
 
@@ -55,7 +55,7 @@
 }
 
 - (void)textFieldTextDidChange:(NSNotification *)notification {
-    if (notification.object == self) { //Since THContactView.textField is a THContactTextField
+    if (notification.object == self) { //Since THTokenView.textField is a THTokenTextField
         if (self.delegate && [self.delegate respondsToSelector:@selector(textFieldDidChange:)]){
             [self.delegate textFieldDidChange:self];
         }
